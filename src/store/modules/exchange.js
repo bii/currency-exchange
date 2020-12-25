@@ -75,11 +75,6 @@ export default {
     },
     actions: {
         exchangeCurrency: (injectee) => {
-
-            // function isFiat(currencyCode) {
-            //     return injectee.getters['init/getFiatCurrencyItems'].indexOf(currencyCode) !== -1
-            // }
-
             const amountIn = injectee.state.amountIn
             if (!isNaN(amountIn)) {
                 const currencyCodeIn = injectee.state.currencyCodeIn
