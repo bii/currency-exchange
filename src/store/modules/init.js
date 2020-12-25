@@ -38,48 +38,50 @@ export default {
     actions: {
         initializeFiatCurrencyItems: injectee => {
             const fiatCurrencyItems = []
-            injectee.dispatch('init/api/getLatestExchangeRates', null, {root: true})
+            injectee.dispatch('exchange/init/api/getLatestExchangeRates', null, {root: true})
                 .then(response => response.json())
                 .then(result => {
                     const {rates, base} = result;
                     const items = Object.keys(rates)
                     fiatCurrencyItems.push(...items, base)
-                    injectee.commit('init/setFiatCurrencyItems', fiatCurrencyItems, {root: true})
+                    injectee.commit('exchange/init/setFiatCurrencyItems', fiatCurrencyItems, {root: true})
                 })
         },
         initializeSymbols: injectee => {
-            injectee.dispatch('init/api/getPricesForAllSymbolsPromise', null, {root: true})
+            injectee.dispatch('exchange/init/api/getPricesForAllSymbolsPromise', null, {root: true})
                 .then(response => response.json())
                 .then(result => {
                     const symbols = result.map(item => item.symbol)
-                    injectee.commit('init/setSymbols', symbols, {root: true})
+                    injectee.commit('exchange/init/setSymbols', symbols, {root: true})
                 })
         },
         findCurrencyOptions: (injectee, payload) => {
-            injectee.dispatch('init/resetCurrencyOptions', null, {root: true})
-            let options
+            injectee.dispatch('exchange/init/resetCurrencyOptions', null, {root: true})
+            let options = []
             let fiatOptions = []
             let cryptoOptions
-            if (injectee.getters.getFiatCurrencyItems.indexOf(payload) !== -1) {
-                fiatOptions = injectee.getters.getFiatCurrencyItems
-            }
 
-            cryptoOptions = injectee.getters.getSymbols
-                .filter(symbol => symbol.startsWith(payload))
-                .map(symbol => symbol.slice(payload.length))
+            if (payload && payload.length > 1) {
+                if (injectee.getters.getFiatCurrencyItems.indexOf(payload) !== -1) {
+                    fiatOptions = injectee.getters.getFiatCurrencyItems
+                }
 
-            options = fiatOptions.concat(cryptoOptions)
-            options = [...new Set(options)]
+                cryptoOptions = injectee.getters.getSymbols
+                    .filter(symbol => symbol.startsWith(payload))
+                    .map(symbol => symbol.slice(payload.length))
 
-            if (!payload) {
-                injectee.commit('init/resetCurrencyOptions', [], {root: true})
+                options = fiatOptions.concat(cryptoOptions)
+                options = [...new Set(options)]
+
+                injectee.commit('exchange/init/setCurrencyOptions', options, {root: true})
+            } else {
+                injectee.commit('exchange/init/resetCurrencyOptions', [], {root: true})
                 return
             }
 
-            injectee.commit('init/setCurrencyOptions', options, {root: true})
         },
         resetCurrencyOptions: injectee => {
-            injectee.commit('init/resetCurrencyOptions', [], {root: true})
+            injectee.commit('exchange/init/resetCurrencyOptions', [], {root: true})
         },
 
     }

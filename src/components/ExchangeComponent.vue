@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     init: function () {
-      this.$store.dispatch('init/initializeFiatCurrencyItems')
-      this.$store.dispatch('init/initializeSymbols')
+      this.$store.dispatch('exchange/init/initializeFiatCurrencyItems')
+      this.$store.dispatch('exchange/init/initializeSymbols')
     }
   },
   mounted() {

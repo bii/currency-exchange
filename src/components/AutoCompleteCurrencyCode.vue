@@ -14,7 +14,7 @@ export default {
   name: "AutoCompleteCurrencyCode",
   computed: {
     getOptions: function () {
-      return this.$store.getters['init/getCurrencyOptions']
+      return this.$store.getters['exchange/init/getCurrencyOptions']
     }
   },
   methods: {

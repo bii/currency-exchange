@@ -16,10 +16,10 @@ name: "TextFieldCurrencyCode",
   methods: {
     onInput: function (currencyCode) {
       this.$store.commit('exchange/setCurrencyCodeIn', currencyCode)
-      this.$store.dispatch('init/findCurrencyOptions', currencyCode)
+      this.$store.dispatch('exchange/init/findCurrencyOptions', currencyCode)
     },
     onClickClear: function () {
-      this.$store.dispatch('init/resetCurrencyOptions')
+      this.$store.dispatch('exchange/init/resetCurrencyOptions')
     }
   }
 }
