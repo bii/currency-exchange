@@ -1,0 +1,26 @@
+Documentation
+
+Setup
+
+VUEX
+I added VUEX into my application. VUEX makes my components cleaner and all I need to do in my components is dispatch appropriate actions. Since I put my business logic in the store actions, my business logic is separated from presentation. Also, since I needed to communicate with external API’s, I also found it appropriate to use actions for that purpose. VUEX also allows me to split my business logic into logically coherent modules, which I have tried to accomplish. This hopefully increases maintainability. This way my store also works as kind of global cache. However, this cache is not maintained between page refreshes. I would have to fall back on local storage in the browser for that purpose. I have not done that because I only have one route and no page post backs in my app. You could argue that it would make a difference in speed if the app was public and used by many users – and you’re probably right.
+
+Vuetify
+I have added this VUE UI Library / plugin because it gives me material components, e.g., “auto-complete” and “text-field” components that are good fit for my application. This way, I do not have to build something from scratch which gives faster time to market. Furthermore, it gives me responsive layout components which lets me customize how my app will look great on different devices and desktop.
+Initialization
+When the app is mounted, I am populating my auto-complete-components with a list of fiats. I have done so for the sake of usability and user experience.
+
+API’s
+I have put my API actions in a separate VUEX module to make it easier to add more API’s.
+Exchange currencies and “caching”
+For fiat-to-fiat exchanges, I am making use of “caching”, because it makes sense to cache responses for the Exchange Rates API, since they are valid for at least one day.
+
+Exchange strategy
+For fiat-to-fiat-exchanges I am using caching and the Exchange Rates API. Before using my cache, I check if there is a newer exchange rates based on the date in the object and today’s date. It is not a completely correct check because I can have an object in the cache that is from Friday and if I am using the app on a following Saturday or Sunday, then the object from Friday has the most recent exchange rates. Here I could save a call the external API, removing the object from my cache and adding an identical object to my cache again. However, I felt that it was beside the purpose of the assessment to make a big deal of it.
+
+Mixins
+I have used mixins for the sake of not duplicating code in my components and to share common functionality in one place.
+
+Suggestions and shortage
+The app only supports exchange between fiat currencies.
+I started on handling exchange between crypto and fiat currencies, but I did not finish because I did not have a clear idea of I how I would accomplish it with the limitations of the binance price open API. I would have to think about it and try different things out before I settle on satisfying solution. 
