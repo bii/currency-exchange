@@ -15,8 +15,9 @@ export default {
 name: "TextFieldCurrencyCode",
   methods: {
     onInput: function (currencyCode) {
-      this.$store.commit('exchange/setCurrencyCodeIn', currencyCode)
-      this.$store.dispatch('exchange/init/findCurrencyOptions', currencyCode)
+      const currencyCodeUppercase = currencyCode.toUpperCase()
+      this.$store.commit('exchange/setCurrencyCodeIn', currencyCodeUppercase)
+      this.$store.dispatch('exchange/init/findCurrencyOptions', currencyCodeUppercase)
     },
     onClickClear: function () {
       this.$store.dispatch('exchange/init/resetCurrencyOptions')
