@@ -75,7 +75,7 @@ export default {
 
                 injectee.commit('exchange/init/setCurrencyOptions', options, {root: true})
             } else {
-                injectee.commit('exchange/init/resetCurrencyOptions', [], {root: true})
+                injectee.commit('exchange/init/resetCurrencyOptions', null, {root: true})
                 return
             }
 
