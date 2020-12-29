@@ -99,32 +99,28 @@ export default {
                             const todayDatePart = injectee.getters['date/getTodayDate']
 
                             if (dateDatePart < todayDatePart) {
-                                if (currencyCodeIn) {
-                                    injectee.dispatch('exchange/api/getLatestRatesByBasePromise', currencyCodeIn, {root: true})
-                                        .then(response => response.json())
-                                        .then(result => {
-                                            injectee.commit('exchange/removeFromLatestRatesData', currencyCodeIn, {root: true})
-                                            injectee.commit('exchange/pushToLatestRatesData', result, {root: true})
-                                            const {rates} = result
-                                            amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
-                                            injectee.commit('exchange/setAmountOut', amountOut, {root: true})
-                                        })
-                                }
-                            } else {
-                                amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
-                                injectee.commit('exchange/setAmountOut',amountOut , {root: true})
-                            }
-                        } else {
-                            if (currencyCodeIn) {
                                 injectee.dispatch('exchange/api/getLatestRatesByBasePromise', currencyCodeIn, {root: true})
                                     .then(response => response.json())
                                     .then(result => {
+                                        injectee.commit('exchange/removeFromLatestRatesData', currencyCodeIn, {root: true})
                                         injectee.commit('exchange/pushToLatestRatesData', result, {root: true})
                                         const {rates} = result
-                                        const amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
+                                        amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
                                         injectee.commit('exchange/setAmountOut', amountOut, {root: true})
                                     })
+                            } else {
+                                amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
+                                injectee.commit('exchange/setAmountOut', amountOut, {root: true})
                             }
+                        } else {
+                            injectee.dispatch('exchange/api/getLatestRatesByBasePromise', currencyCodeIn, {root: true})
+                                .then(response => response.json())
+                                .then(result => {
+                                    injectee.commit('exchange/pushToLatestRatesData', result, {root: true})
+                                    const {rates} = result
+                                    const amountOut = injectee.getters.exchange(amountIn, rates[currencyCodeOut])
+                                    injectee.commit('exchange/setAmountOut', amountOut, {root: true})
+                                })
                         }
                     } else {
                         injectee.dispatch('exchange/exchangeBySymbol', null, {root: true})
